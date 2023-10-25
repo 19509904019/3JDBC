@@ -34,9 +34,9 @@ public class PSOtherPart {
         PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
         // 占位符赋值
-        preparedStatement.setObject(1,"test");
-        preparedStatement.setObject(2,"123456");
-        preparedStatement.setObject(3,"yujun");
+        preparedStatement.setObject(1, "test");
+        preparedStatement.setObject(2, "123456");
+        preparedStatement.setObject(3, "yujun");
 
         // 传输SQL语句
         preparedStatement.executeUpdate();
@@ -48,6 +48,53 @@ public class PSOtherPart {
         System.out.println(anInt);
 
         // 关闭资源
+        preparedStatement.close();
+        connection.close();
+    }
+
+    /*
+     * 批量插入数据
+     * */
+    @Test
+    public void insertBatch() throws Exception {
+        // 注册驱动
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        // 建立连接
+        /*
+        * rewriteBatchedStatements=true:允许批量插入
+        *   注意：
+        *       1. insert into values(必须写复数，并且语句不能以 ; 结束)
+        *       2. 不是执行每条语句，是批量添加addBatch();
+        *       3. 统一批量添加
+        * */
+        Connection connection = DriverManager.getConnection(
+                "jdbc:mysql:///atguigu?rewriteBatchedStatements=true","root","123456");
+
+        // 编写sql语句
+        String sql = "INSERT INTO t_user(account, password, nickname) VALUES (?,?,?)";
+
+        // 创建preparestatement
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        long start = System.currentTimeMillis();
+        // 占位符赋值,插入10000条数据
+        for (int i = 0; i < 10000; i++) {
+            preparedStatement.setObject(1, "root" + i);
+            preparedStatement.setObject(2, (int) (Math.random() * 1000000 + 1));
+            preparedStatement.setObject(3, "ZY" + i);
+
+            // 批量存储语句完后再发送
+            preparedStatement.addBatch();
+        }
+        // 批量发送sql语句
+        preparedStatement.executeBatch();
+
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
+
+
+        //关闭资源
         preparedStatement.close();
         connection.close();
     }
