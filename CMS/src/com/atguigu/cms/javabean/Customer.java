@@ -1,4 +1,4 @@
-package com.atguigu.cms.javabean;
+package src.com.atguigu.cms.javabean;
 
 public class Customer {
 

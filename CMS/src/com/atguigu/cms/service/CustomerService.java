@@ -1,10 +1,9 @@
-package com.atguigu.cms.service;
+package src.com.atguigu.cms.service;
 
-import com.atguigu.cms.dao.CustomerDao;
-import com.atguigu.cms.javabean.Customer;
+import src.com.atguigu.cms.dao.CustomerDao;
+import src.com.atguigu.cms.javabean.Customer;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

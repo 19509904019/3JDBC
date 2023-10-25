@@ -1,4 +1,4 @@
-package com.atguigu.cms.view;
+package src.com.atguigu.cms.view;
 
 import java.util.Scanner;
 
